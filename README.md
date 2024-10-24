@@ -4,6 +4,7 @@
 This is a Go-based REST API to manage products with authentication using JWT and a local SQLite database.
 The code is a starter point for new GO developers that wants to setup an API with a local database.
 
+
 ## 🔥 Cool Features
 
 * Efficient Product Management: Create, retrieve, update, and delete product records easily.
