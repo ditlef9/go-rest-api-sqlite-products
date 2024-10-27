@@ -4,23 +4,12 @@ package models
 
 import (
 	"database/sql"
+	"ekeberg.com/go-api-sql-gcp-products/db"
 	"fmt"
 	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
 )
-
-var DB *sql.DB
-
-func ConnectDatabase() error {
-	db, err := sql.Open("sqlite3", "./sqlitedb.db")
-	if err != nil {
-		return err
-	}
-
-	DB = db
-	return nil
-}
 
 type Product struct {
 	Id          int    `json:"id"`
@@ -31,40 +20,49 @@ type Product struct {
 }
 
 func GetProducts(count int) ([]Product, error) {
+	// Initialize the base query
+	query := "SELECT id, name, description, ean, price_out FROM products"
 
-	rows, err := DB.Query("SELECT id, name, description, ean, price_out FROM products LIMIT " + strconv.Itoa(count))
+	// Modify the query to include a LIMIT if count is greater than zero
+	if count > 0 {
+		query += " LIMIT " + strconv.Itoa(count)
+	} else if count == 0 {
+		// If count is 0, default it to 10000
+		count = 10000
+		query += " LIMIT " + strconv.Itoa(count)
+	}
 
+	// Execute the query
+	rows, err := db.DB.Query(query)
 	if err != nil {
 		return nil, err
 	}
-
 	defer rows.Close()
 
+	// Initialize an empty slice to store products
 	products := make([]Product, 0)
 
+	// Iterate through the rows and scan into Product structs
 	for rows.Next() {
 		singleProduct := Product{}
 		err = rows.Scan(&singleProduct.Id, &singleProduct.Name, &singleProduct.Description, &singleProduct.Ean, &singleProduct.PriceOut)
-
 		if err != nil {
 			return nil, err
 		}
-
 		products = append(products, singleProduct)
 	}
 
-	err = rows.Err()
-
-	if err != nil {
+	// Check for any errors encountered during row iteration
+	if err = rows.Err(); err != nil {
 		return nil, err
 	}
 
-	return products, err
+	return products, nil
 }
 
 func GetProductById(id string) (Product, error) {
 
-	stmt, err := DB.Prepare("SELECT id, name, description, ean, price_out FROM products WHERE id = ?")
+	stmt, err := db.DB.Prepare("SELECT id, name, description, ean, price_out FROM products WHERE id = ?")
 
 	if err != nil {
 		return Product{}, err
@@ -85,7 +83,7 @@ func GetProductById(id string) (Product, error) {
 
 func AddProduct(newProduct Product) (bool, error) {
 
-	tx, err := DB.Begin()
+	tx, err := db.DB.Begin()
 	if err != nil {
 		return false, err
 	}
@@ -111,7 +109,7 @@ func AddProduct(newProduct Product) (bool, error) {
 
 func UpdateProduct(ourProduct Product, id int) (bool, error) {
 
-	tx, err := DB.Begin()
+	tx, err := db.DB.Begin()
 	if err != nil {
 		return false, err
 	}
@@ -139,13 +137,13 @@ func UpdateProduct(ourProduct Product, id int) (bool, error) {
 
 func DeleteProduct(personId int) (bool, error) {
 
-	tx, err := DB.Begin()
+	tx, err := db.DB.Begin()
 
 	if err != nil {
 		return false, err
 	}
 
-	stmt, err := DB.Prepare("DELETE FROM products where id = ?")
+	stmt, err := db.DB.Prepare("DELETE FROM products where id = ?")
 
 	if err != nil {
 		return false, err
