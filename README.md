@@ -4,6 +4,8 @@
 This is a Go-based REST API to manage products with authentication using JWT and a local SQLite database.
 The code is a starter point for new GO developers that wants to setup an API with a local database.
 
+---
+
 
 ## 🔥 Cool Features
 
@@ -12,6 +14,9 @@ The code is a starter point for new GO developers that wants to setup an API wit
 * Google Cloud Ready: Deploy effortlessly to Google Cloud Run to learn howto use GCP.
 * Gin-Gonic Framework: Built on the blazing-fast Gin web framework, ensuring performance and simplicity.
 * Seamless Local Setup: Get the API running locally in just a few steps on Windows.
+
+
+---
 
 
 ## 🚀 Running Locally (Windows)
@@ -24,6 +29,10 @@ The code is a starter point for new GO developers that wants to setup an API wit
 5. **Run the server locally:** `go run main.go`.
 6. **Access API:** The API will be available at `http://localhost:8080`.
 
+
+---
+
+
 ## 🛠️ Deploy to Google Cloud Run
 
 1. **Authenticate with GCP:** `gcloud auth login`
@@ -34,6 +43,9 @@ The code is a starter point for new GO developers that wants to setup an API wit
     ```
 
 3. **Access API:** The API will be available via the generated GCP URL.
+
+
+---
 
 
 ## 📜 Create the SQLite Database Schema
@@ -65,6 +77,8 @@ INSERT INTO products (name, description, ean, price_out) VALUES ('Yoghurt', 'Nat
 INSERT INTO products (name, description, ean, price_out) VALUES ('Havregryn', 'Grovkornet havregryn, 1 kg.', '6678901234567', 14.90);
 ```
 
+---
+
 ## 💻 Developer Notes
 
 **Initializing the Project:**
@@ -81,6 +95,8 @@ go get -u github.com/gin-gonic/gin
 * POST /api/v1/product: Add a new product 
 * PUT /api/v1/product/:id: Update an existing product
 * DELETE /api/v1/product/:id: Delete a product
+
+---
 
 ## 📖 License
 
