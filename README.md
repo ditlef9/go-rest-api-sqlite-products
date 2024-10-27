@@ -31,6 +31,55 @@ The code is a starter point for new GO developers that wants to setup an API wit
 5. **Run the server locally:** `go run main.go`.
 6. **Access API:** The API will be available at `http://localhost:8080`.
 
+---
+
+
+## 🔑 Setting up a human user and service user
+
+Open Postman, setup the following routes:
+
+* POST http://localhost:8080/api/v1/users/signup<br>
+Body > Raw:
+```
+{
+    "email": "human@gmail.com",
+    "password": "Vinterferie2024!"
+}
+```
+
+* POST http://localhost:8080/api/v1/users/signup<br>
+Body > Raw:
+```
+{
+    "email": "service@gmail.com",
+    "password": "Vinterferie2024!"
+}
+```
+
+Set the new users as `approved` by opening sqlite.db in DB Browser for SQLite:
+
+```sql
+SELECT * FROM users;
+UPDATE users SET approved=1;
+```
+
+Now login as human or service to get a authorization token:
+
+* POST http://localhost:8080/api/v1/users/login<br>
+  Body > Raw:
+```
+{
+    "email": "human@gmail.com",
+    "password": "Vinterferie2024!"
+}
+```
+
+Next you can use the different routes with the authorization token:
+
+* GET http://localhost:8080/api/v1/products<br>
+  Headers:
+  - Authorization TOKEN
+
 
 ---
 
@@ -67,11 +116,11 @@ User Authentication:
 
 Product Management:
 
-* GET /api/v1/product: List all products (authentication required as human or service).
-* GET /api/v1/product/:id: Get a product by ID (authentication required as human or service).
-* POST /api/v1/product: Add a new product (authentication required as human).
-* PUT /api/v1/product/:id: Update an existing product (authentication required as human).
-* DELETE /api/v1/product/:id: Delete a product (authentication required as human).
+* GET /api/v1/products: List all products (authentication required as human or service).
+* GET /api/v1/products/:id: Get a product by ID (authentication required as human or service).
+* POST /api/v1/products: Add a new product (authentication required as human).
+* PUT /api/v1/products/:id: Update an existing product (authentication required as human).
+* DELETE /api/v1/products/:id: Delete a product (authentication required as human).
 
 ---
 

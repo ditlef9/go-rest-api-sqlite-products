@@ -30,18 +30,18 @@ func main() {
 		authenticatedHumanOrService := v1.Group("/")
 		authenticatedHumanOrService.Use(middlewares.Authenticate)
 		{
-			authenticatedHumanOrService.GET("product", handlers.GetProducts)        // GET http://localhost:8080/api/v1/product
-			authenticatedHumanOrService.GET("product/:id", handlers.GetProductById) // GET http://localhost:8080/api/v1/product/1
+			authenticatedHumanOrService.GET("products", handlers.GetProducts)        // GET http://localhost:8080/api/v1/products
+			authenticatedHumanOrService.GET("products/:id", handlers.GetProductById) // GET http://localhost:8080/api/v1/products/1
 		}
 
 		// Products (authentication required as human)
 		authenticatedHumanOnly := v1.Group("/")
 		authenticatedHumanOnly.Use(middlewares.Authenticate)
 		{
-			authenticatedHumanOnly.POST("product", handlers.AddProduct)          // POST http://localhost:8080/api/v1/product
-			authenticatedHumanOnly.PUT("product/:id", handlers.UpdateProduct)    // PUT http://localhost:8080/api/v1/product/17
-			authenticatedHumanOnly.DELETE("product/:id", handlers.DeleteProduct) // DELETE http://localhost:8080/api/v1/product/17
-			authenticatedHumanOnly.OPTIONS("product", handlers.Options)          // OPTIONS http://localhost:8080/api/v1/product
+			authenticatedHumanOnly.POST("products", handlers.AddProduct)          // POST http://localhost:8080/api/v1/products
+			authenticatedHumanOnly.PUT("products/:id", handlers.UpdateProduct)    // PUT http://localhost:8080/api/v1/products/17
+			authenticatedHumanOnly.DELETE("products/:id", handlers.DeleteProduct) // DELETE http://localhost:8080/api/v1/products/17
+			authenticatedHumanOnly.OPTIONS("products", handlers.Options)          // OPTIONS http://localhost:8080/api/v1/products
 		}
 	}
 
